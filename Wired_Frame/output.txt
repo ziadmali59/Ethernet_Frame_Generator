@@ -1,0 +1,9 @@
+Configuration read from input.txt:
+LineRate: 10
+CaptureSizeMs: 10
+MinNumOfIFGsPerPacket: 12
+BurstSize: 3
+BurstPeriodicity_us: 100
+DestAddress: 0x515151515151
+SourceAddress: 0x344443344433
+MaxPacketSize: 1500
