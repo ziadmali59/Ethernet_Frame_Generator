@@ -54,11 +54,11 @@ uint32_t calculateCrc32(const std::vector<uint8_t>& data) {
     return payload;
 }
 //Ethernet Packet Generator
-std::vector<uint8_t> generatePacket(const Config_pkt& config) {
+std::vector<uint8_t> generatePacket(const Config_pkt& config,const std::vector<uint8_t>& payload) {
     std::vector<uint8_t> packet;
 
     // Add Preamble
-    uint8_t preamble[] = {0xFA, 0xFA, 0xFA, 0xFA, 0xFA, 0xFA, 0xFA, 0xFA}; // 8 bytes
+    uint8_t preamble[] = {0xFB, 0x55, 0x55, 0x55, 0x55, 0x55, 0x55, 0xD5}; // 8 bytes
     packet.insert(packet.end(), std::begin(preamble), std::end(preamble));
 
     // Add Destination Address (6 bytes)
@@ -81,9 +81,8 @@ std::vector<uint8_t> generatePacket(const Config_pkt& config) {
     packet.push_back(etherType & 0xFF);         // Byte 0 (LSB)
     packet.push_back((etherType >> 8) & 0xFF);  // Byte 1 (MSB)
 
-   // Generate random payload (example size: 15 bytes)
-    std::vector<uint8_t> payload = generateRandomPayload(40); 
     packet.insert(packet.end(), payload.begin(), payload.end());
+
 
     // Calculate CRC-32 for the packet so far
     uint32_t crc = calculateCrc32(packet);
@@ -97,7 +96,7 @@ std::vector<uint8_t> generatePacket(const Config_pkt& config) {
     // Ensure packet size is aligned to 4 bytes (before adding IFGs)
     size_t padding = (4 - (packet.size() % 4)) % 4;
     if (padding > 0) {
-        std::vector<uint8_t> ifg(padding, 0x99); // IFG byte (0x77) padding
+        std::vector<uint8_t> ifg(padding, 0x07); // IFG byte (0x07) padding
         packet.insert(packet.end(), ifg.begin(), ifg.end());
     }
 

@@ -13,6 +13,11 @@ struct Config_params {
     std::string DestAddress;
     std::string SourceAddress;
     int MaxPacketSize = 0;
+    int SCS = 0;
+    int maxNrb = 0;
+    int NrbPerPacket=30;
+    std::string PayloadType; 
+
 };
 
 // Function to load configuration from a file
@@ -39,6 +44,11 @@ Config_params loadConfig(const std::string& filePath) {
             else if (key == "Eth.DestAddress") config.DestAddress = value;
             else if (key == "Eth.SourceAddress") config.SourceAddress = value;
             else if (key == "Eth.MaxPacketSize") config.MaxPacketSize = std::stoi(value);
+            else if (key == "Oran.SCS") config.SCS = std::stoi(value);
+            else if (key == "Oran.MaxNrb") config.maxNrb = std::stoi(value);
+            else if (key == "Oran.NrbPerPacket") config.NrbPerPacket = std::stoi(value);
+            else if (key == "Oran.PayloadType") config.PayloadType = value;
+
         }
     }
 
@@ -56,4 +66,9 @@ void printConfig(const Config_params& config, std::ostream& out) {
     out << "DestAddress: " << config.DestAddress << std::endl;
     out << "SourceAddress: " << config.SourceAddress << std::endl;
     out << "MaxPacketSize: " << config.MaxPacketSize << std::endl;
+    out << "SCS: " << config.SCS << std::endl;
+    out << "maxNrb: " << config.maxNrb << std::endl;
+    out << "NrbPerPacket: " << config.NrbPerPacket << std::endl;
+    out << "PayloadType: " << config.PayloadType << std::endl;
+
 }
